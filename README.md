@@ -8,3 +8,6 @@
 - Mark entries as completed
 - Track progress visually (bar & %)
 - Data persists via localStorage
+
+hekasdhl
+
