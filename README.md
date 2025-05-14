@@ -9,5 +9,3 @@
 - Track progress visually (bar & %)
 - Data persists via localStorage
 
-hekasdhl
-
