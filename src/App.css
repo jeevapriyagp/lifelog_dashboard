@@ -7,8 +7,38 @@
   color: #222;
 }
 
-h1, h2 
+h1 
 {
   text-align: center;
   color: #333;
+}
+
+.module-grid 
+{
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+.module 
+{
+  flex: 1;
+  text-align: center;
+  background-color: #f3f3f3;
+  padding: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-weight: bold;
+}
+
+.module:hover 
+{
+  background-color: #ddd;
+}
+
+.module-content 
+{
+  margin-top: 30px;
 }
