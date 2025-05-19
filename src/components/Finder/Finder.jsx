@@ -1,73 +1,103 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Finder.css';
 
 function Finder() 
 {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [selected, setSelected] = useState(null);
+  const [savedShows, setSavedShows] = useState(() => {
+    const saved = localStorage.getItem('savedShows');
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  const search = async () => {
-    if (!query.trim()) return;
-    try 
+  useEffect(() => {
+    localStorage.setItem('savedShows', JSON.stringify(savedShows));
+  }, [savedShows]);
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+
+    if (value.length > 1) 
     {
-      const res = await fetch(`https://api.tvmaze.com/search/shows?q=${query}`);
-      const data = await res.json();
-      setResults(data);
-      setSelected(null);
+      fetch(`https://api.tvmaze.com/search/shows?q=${value}`)
+        .then(res => res.json())
+        .then(data => {
+          setResults(data.map(entry => entry.show));
+        });
     } 
-    catch (err) 
+    else 
     {
-      console.error('Fetch failed:', err);
+      setResults([]);
     }
+  };
+
+  const handleSave = (show) => {
+    if (!savedShows.find(saved => saved.id === show.id)) {
+      setSavedShows([...savedShows, show]);
+    }
+  };
+
+  const handleDelete = (id) => {
+    setSavedShows(savedShows.filter(show => show.id !== id));
   };
 
   return (
     <div className="finder">
       <h2>TV Show Finder</h2>
+
       <input
+        type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search TV shows..."
+        onChange={handleSearch}
+        placeholder="Search for a show"
+        className="search-input"
       />
-      <button onClick={search}>Search</button>
 
       <div className="results">
-        {results.map((r, i) => (
-          <div
-            key={i}
-            className="card"
-            onClick={() => {
-              console.log('Clicked:', r.show.name);
-              setSelected(r.show);
-            }}
-            style={{ cursor: 'pointer' }}
-          >
-            <h3>{r.show.name}</h3>
-            {r.show.image && (
-              <img src={r.show.image.medium} alt={r.show.name} />
-            )}
+        {results.map(show => (
+          <div key={show.id} className="show-card">
+            <div className="card">
+              <img src={show.image?.medium || ''} alt={show.name} />
+              <button
+                onClick={() => handleSave(show)}
+                className="save-btn"
+                disabled={savedShows.some(saved => saved.id === show.id)}
+              >
+                {savedShows.some(saved => saved.id === show.id) ? '✓ Saved' : '☆ Save'}
+              </button>
+            </div>
+            <div className="details-box">
+              <h3>{show.name}</h3>
+              <p dangerouslySetInnerHTML={{ __html: show.summary }}></p>
+              <p><strong>Language:</strong> {show.language}</p>
+              <p><strong>Genres:</strong> {show.genres.join(', ')}</p>
+              <p><strong>Premiered:</strong> {show.premiered}</p>
+              <p><strong>Status:</strong> {show.status}</p>
+            </div>
           </div>
         ))}
       </div>
 
-      {selected && (
-  <div className="details">
-    <h2>{selected.name}</h2>
-
-    {selected.summary && (
-      <p dangerouslySetInnerHTML={{ __html: selected.summary }} />
-    )}
-
-    <p><strong>Language:</strong> {selected.language || 'N/A'}</p>
-    <p><strong>Genres:</strong> {selected.genres?.join(', ') || 'N/A'}</p>
-    <p><strong>Premiered:</strong> {selected.premiered || 'N/A'}</p>
-    <p><strong>Status:</strong> {selected.status || 'N/A'}</p>
-
-    <button onClick={() => setSelected(null)}>Close</button>
-  </div>
-)}
-
+      {savedShows.length > 0 && (
+        <div className="saved-section">
+          <h3>Saved Shows</h3>
+          <div className="saved-grid">
+            {savedShows.map(show => (
+              <div key={show.id} className="saved-card">
+                <img src={show.image?.medium || ''} alt={show.name} />
+                <p>{show.name}</p>
+                <button
+                  onClick={() => handleDelete(show.id)}
+                  className="delete-btn"
+                >
+                  🗑 Delete
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
