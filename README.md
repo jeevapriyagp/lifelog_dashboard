@@ -51,7 +51,7 @@ This project demonstrates React skills including component-based design, hooks, 
 - Consistent and simple UI design
 
 ## Live Demo - Hosted in Vercel
-
+https://lifelog-dashboard.vercel.app/
 
 ## Set Up Instructions
 ### Prerequisites
