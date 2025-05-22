@@ -1,63 +1,16 @@
-.journal-container 
-{
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  margin-bottom: 40px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.journal-title 
-{
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.journal-input 
-{
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  margin-bottom: 15px;
-}
-
 .journal-editor 
 {
   width: 100%;
   min-height: 120px;
   padding: 12px;
-  border: 1px solid #ccc;
+  font-size: 15px;
   border-radius: 8px;
   background-color: #fdfdfd;
-  font-size: 15px;
+  border: 1px solid #ccc;
   line-height: 1.5;
   margin-bottom: 20px;
-  overflow-y: auto;
-}
-
-.journal-button 
-{
-  display: block;
-  background-color: #3f51b5;
-  color: white;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: background 0.3s ease;
-  margin: 0 auto 30px;
-}
-
-.journal-button:hover 
-{
-  background-color: #303f9f;
+  resize: vertical;
+  outline: none;
 }
 
 .journal-note 
@@ -65,60 +18,50 @@
   background-color: #fefefe;
   border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 18px 20px;
+  padding: 16px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.journal-note h3 
+body.dark-mode .journal-editor 
 {
-  margin: 0 0 8px;
-  font-size: 18px;
-  color: #222;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  color: #ffffff;
 }
 
-.journal-note div:not(.journal-note-buttons) 
+body.dark-mode .journal-note 
 {
-  font-size: 15px;
-  color: #444;
-  margin-bottom: 8px;
+  background-color: #1f1f1f;
+  border: 1px solid #333;
+  color: #ffffff;
 }
 
-.journal-note-buttons 
+@media (max-width: 768px) 
 {
-  display: flex;
-  gap: 10px;
-  margin-top: 8px;
+  .journal-editor 
+  {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .journal-note 
+  {
+    padding: 14px;
+  }
 }
 
-.journal-note-buttons button 
+@media (max-width: 480px) 
 {
-  padding: 6px 12px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
+  .journal-editor 
+  {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .journal-note 
+  {
+    padding: 12px;
+    font-size: 14px;
+  }
 }
 
-.journal-note-buttons button:first-child 
-{
-  background-color: #2196f3;
-  color: white;
-}
-
-.journal-note-buttons button:first-child:hover 
-{
-  background-color: #1976d2;
-}
-
-.journal-note-buttons button:last-child 
-{
-  background-color: #f44336;
-  color: white;
-}
-
-.journal-note-buttons button:last-child:hover 
-{
-  background-color: #d32f2f;
-}

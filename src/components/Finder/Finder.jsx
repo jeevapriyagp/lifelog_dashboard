@@ -1,59 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import './Finder.css';
+import React, { useState, useEffect } from 'react'
+import './Finder.css'
 
 function Finder() 
 {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  // States for search query, results, and saved shows
+  const [query, setQuery] = useState('')
+  const [results, setResults] = useState([])
   const [savedShows, setSavedShows] = useState(() => {
-    const saved = localStorage.getItem('savedShows');
-    return saved ? JSON.parse(saved) : [];
-  });
+    const saved = localStorage.getItem('savedShows')
+    return saved ? JSON.parse(saved) : []
+  })
 
+  // Update localStorage when savedShows changes
   useEffect(() => {
-    localStorage.setItem('savedShows', JSON.stringify(savedShows));
-  }, [savedShows]);
+    localStorage.setItem('savedShows', JSON.stringify(savedShows))
+  }, [savedShows])
 
+  // Handle search input and API call
   const handleSearch = (e) => {
-    const value = e.target.value;
-    setQuery(value);
+    const value = e.target.value
+    setQuery(value)
 
     if (value.length > 1) 
     {
       fetch(`https://api.tvmaze.com/search/shows?q=${value}`)
         .then(res => res.json())
         .then(data => {
-          setResults(data.map(entry => entry.show));
-        });
+          setResults(data.map(entry => entry.show))
+        })
     } 
     else 
     {
-      setResults([]);
+      setResults([])
     }
-  };
+  }
 
+  // Save a show
   const handleSave = (show) => {
     if (!savedShows.find(saved => saved.id === show.id)) {
-      setSavedShows([...savedShows, show]);
+      setSavedShows([...savedShows, show])
     }
-  };
+  }
 
+  // Delete a saved show
   const handleDelete = (id) => {
-    setSavedShows(savedShows.filter(show => show.id !== id));
-  };
+    setSavedShows(savedShows.filter(show => show.id !== id))
+  }
 
   return (
-    <div className="finder">
-      <h2>TV Show Finder</h2>
+    <div className="module-box">
+      <h2>Browse and Find TV Shows</h2>
 
+      {/* Search input */}
       <input
         type="text"
         value={query}
         onChange={handleSearch}
         placeholder="Search for a show"
-        className="search-input"
+        className="input-field"
       />
 
+      {/* Search results */}
       <div className="results">
         {results.map(show => (
           <div key={show.id} className="show-card">
@@ -61,7 +68,7 @@ function Finder()
               <img src={show.image?.medium || ''} alt={show.name} />
               <button
                 onClick={() => handleSave(show)}
-                className="save-btn"
+                className="btn btn-secondary"
                 disabled={savedShows.some(saved => saved.id === show.id)}
               >
                 {savedShows.some(saved => saved.id === show.id) ? '✓ Saved' : '☆ Save'}
@@ -79,6 +86,7 @@ function Finder()
         ))}
       </div>
 
+      {/* Saved shows */}
       {savedShows.length > 0 && (
         <div className="saved-section">
           <h3>Saved Shows</h3>
@@ -89,7 +97,7 @@ function Finder()
                 <p>{show.name}</p>
                 <button
                   onClick={() => handleDelete(show.id)}
-                  className="delete-btn"
+                  className="btn btn-danger"
                 >
                   🗑 Delete
                 </button>
@@ -99,7 +107,7 @@ function Finder()
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default Finder;
+export default Finder
