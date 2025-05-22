@@ -13,10 +13,13 @@ function App() {
 
   // Effect to toggle dark mode class and save preference
   useEffect(() => {
-    if (darkMode) {
+    if (darkMode) 
+    {
       document.body.classList.add('dark-mode')
       localStorage.setItem('theme', 'dark')
-    } else {
+    } 
+    else 
+    {
       document.body.classList.remove('dark-mode')
       localStorage.setItem('theme', 'light')
     }
