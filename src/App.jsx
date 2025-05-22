@@ -4,7 +4,8 @@ import Tracker from './components/Tracker/Tracker'
 import Finder from './components/Finder/Finder'
 import Journal from './components/Journal/Journal'
 
-function App() {
+function App() 
+{
   // State for active module and theme mode
   const [activeModule, setActiveModule] = useState('Tracker')
   const [darkMode, setDarkMode] = useState(() => {
@@ -42,7 +43,7 @@ function App() {
   return (
     <div className="App">
       {/* Header with toggle button */}
-      <header className="app-header">
+      <header>
         <h1>LifeLog Dashboard</h1>
         <button onClick={() => setDarkMode(prev => !prev)} className="btn btn-primary">
           {darkMode ? 'Light Mode' : 'Dark Mode'}
